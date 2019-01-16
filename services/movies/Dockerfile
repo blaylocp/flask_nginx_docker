@@ -11,7 +11,7 @@ COPY ./requirements.txt /opt/app/requirements.txt
 COPY ./src /opt/app/
 COPY ./conf/uwsgi.ini /opt/app/src
 
-RUN apk add --no-cache uwsgi-python3 && \
+RUN apk add --no-cache uwsgi-python3 gcc libc-dev linux-headers && \
     pip install -r requirements.txt
 
 #CMD python manage.py run -h 0.0.0.0
