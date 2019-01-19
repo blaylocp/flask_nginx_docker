@@ -1,0 +1,25 @@
+version: '3.6'
+
+services:
+
+  nginx:
+    build: .
+    ports:
+      - 80:80
+    depends_on:
+      - movies
+
+
+  movies:
+    build:
+      context: ./services/movies
+      dockerfile: Dockerfile
+    volumes:
+      - './services/movies:/opt/app'
+    expose:
+      - 8080
+      
+networks:
+  default:
+    external:
+      name: library
