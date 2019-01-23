@@ -1,3 +1,4 @@
 FROM nginx:latest
 
-COPY ./services/movies/conf/movies.conf /ect/nginx/conf.d/.
+RUN rm -r /etc/nginx/conf.d/default.conf
+COPY ./services/movies/conf/movies.conf /etc/nginx/conf.d/.

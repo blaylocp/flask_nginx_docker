@@ -1,20 +1,25 @@
-FROM python:3.7.2-alpine as BASE
-EXPOSE 8080
+FROM python:3.7.2-slim-stretch
 
-# set working dicrectory
-WORKDIR /opt/app
+EXPOSE 3031
+VOLUME /opt/app/src
 
-# add and install requirements
-COPY ./requirements.txt /opt/app/requirements.txt
+RUN apt-get update && \
+    apt-get install -y build-essential libssl-dev gcc g++ make curl
 
-# add app
-COPY ./src /opt/app/
-COPY ./conf/uwsgi.ini /opt/app/src
+RUN curl -sL https://deb.nodesource.com/setup_8.x | sudo -E bash 
 
-RUN apk add --no-cache uwsgi-python3 gcc libc-dev linux-headers && \
-    pip install -r requirements.txt
+#RUN curl -sL https://deb.nodesource.com/setup_10.x
+#> setup_10.x \
+#    chmod +x setup_10.x && sh setup_10.x
 
-#CMD python manage.py run -h 0.0.0.0
-# ENTRYPOINT ["python"]
-# CMD ["app.py"]
-CMD ["uwsgi", "--ini", "/opt/app/"]
+
+#RUN apt-get install -y htop
+
+
+COPY . .
+
+RUN pip3 install --upgrade pip
+RUN pip3 install -r requirements.txt
+
+
+CMD ["uwsgi", "-s", "0.0.0.0:3031", "--manage-script-name", "--mount", "/api/v1/movies=app:app"]
