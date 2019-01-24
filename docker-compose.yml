@@ -11,6 +11,13 @@ services:
     expose:
       - 3031
 
+  # library:
+  #   build:
+  #     context: ./frontend
+  #     dockerfile: Dockerfile
+  #   volumes:
+  #     - './frontend:/opt/app'
+
   nginx:
     build: .
     ports:
